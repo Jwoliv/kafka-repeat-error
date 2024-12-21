@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: kafka-repeat-error
+  kafka:
+    bootstrap-servers: localhost:9092 # Kafka broker address (matches the Docker Compose service name and port)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3
+      properties:
+        telemetry:
+          enabled: false
+      transaction-id-prefix: tx-${spring.application.name}-${random.uuid}
+
+    template:
+      default-topic: my-topic # Default Kafka topic to use if not specified explicitly
+    listener:
+      missing-topics-fatal: false # Prevent application failure if topics are missing
+
+server:
+  port: 8085
