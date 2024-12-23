@@ -1,31 +1,35 @@
 package com.example.kafkarepeaterror.sender;
 
+import com.example.kafkarepeaterror.controller.KafkaManagerI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class KafkaMessageSenderImpl implements KafkaMessageSender {
 
-    @Value("${spring.kafka.template.default-topic}")
-    private String topic;
-
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaManagerI kafkaManager;
 
     @Override
     public void sendMessage(String key, String value) {
-        kafkaTemplate.executeInTransaction(transactional -> {
-            processTransaction(key, value);
-            log.info("transactional message [{}]", transactional);
-            return true;
-        });
+        processTransaction(key, value);
     }
 
     private void processTransaction(String key, String value) {
-        kafkaTemplate.send(topic, key, value);
+        CompletableFuture.runAsync(() -> {
+            kafkaManager.send1(key, value + "!!!");
+            kafkaManager.send2(key, value);
+        }).exceptionally(t -> {
+            log.error("Error sending message", t);
+            return null;
+        });
+
     }
 }

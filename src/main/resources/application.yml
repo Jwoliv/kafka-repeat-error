@@ -10,7 +10,6 @@ spring:
       properties:
         telemetry:
           enabled: false
-      transaction-id-prefix: tx-${spring.application.name}-${random.uuid}
 
     template:
       default-topic: my-topic # Default Kafka topic to use if not specified explicitly
