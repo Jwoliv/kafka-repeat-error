@@ -14,7 +14,7 @@ public class KafkaManagerImpl implements KafkaManager {
     private String topic2;
 
     private final KafkaTemplate<String, String> kafkaTemplate;
-    private final KafkaTemplate<String, String> kafkaTemplateInteger;
+    private final KafkaTemplate<String, Integer> kafkaTemplateInteger;
 
     @Override
     public void send1(String key, String message) {
@@ -23,6 +23,6 @@ public class KafkaManagerImpl implements KafkaManager {
 
     @Override
     public void send2(String key, String message) {
-        kafkaTemplateInteger.send(topic2, key, message);
+        kafkaTemplateInteger.send(topic2, key, 123);
     }
 }
