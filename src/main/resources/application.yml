@@ -12,7 +12,8 @@ spring:
           enabled: false
 
     template:
-      default-topic: my-topic # Default Kafka topic to use if not specified explicitly
+      topic-1: topic-1 # Default Kafka topic to use if not specified explicitly
+      topic-2: topic-2 # Default Kafka topic to use if not specified explicitly
     listener:
       missing-topics-fatal: false # Prevent application failure if topics are missing
 

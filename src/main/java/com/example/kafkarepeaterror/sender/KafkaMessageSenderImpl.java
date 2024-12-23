@@ -1,12 +1,9 @@
 package com.example.kafkarepeaterror.sender;
 
-import com.example.kafkarepeaterror.controller.KafkaManagerI;
+import com.example.kafkarepeaterror.kafka_manager.KafkaManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -15,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class KafkaMessageSenderImpl implements KafkaMessageSender {
 
-    private final KafkaManagerI kafkaManager;
+    private final KafkaManager kafkaManager;
 
     @Override
     public void sendMessage(String key, String value) {
